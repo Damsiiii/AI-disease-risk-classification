@@ -1,9 +1,9 @@
-🏥 SmartCare Hospital — Disease Risk Classification
+# 🏥 SmartCare Hospital — Disease Risk Classification
 CCS3440 Artificial Intelligence Coursework | SLTC | Option C
 
 An end-to-end, leakage-free Machine Learning pipeline that classifies hospital patients into Low, Medium, or High disease risk levels using clinical, physiological, and hospital-operations data from SmartCare Hospital — with Logistic Regression as the top-performing model, full SHAP explainability, and a deployed Streamlit prototype.
 
-📋 Table of Contents
+## 📋 Table of Contents
 - Problem Statement
 - Dataset
 - Leakage-Free Pipeline Architecture
@@ -17,7 +17,7 @@ An end-to-end, leakage-free Machine Learning pipeline that classifies hospital p
 - Getting Started
 - Team
 
-🎯 Problem Statement
+## 🎯 Problem Statement
 Option C — Multi-Class Disease Risk Classification
 
 Early identification of a patient's disease risk level enables timely clinical intervention, better inpatient bed allocation, and more effective preventive outpatient care.
@@ -29,7 +29,7 @@ Early identification of a patient's disease risk level enables timely clinical i
 | Classes & Support | Low: 13.1% (N=131) · Medium: 46.9% (N=469) · High: 40.0% (N=400) |
 | Held-Out Test Support | Low: N=26 · Medium: N=94 · High: N=80 (Total N=200, 20% stratified test set) |
 
-📊 Dataset
+## 📊 Dataset
 | Property | Value |
 |---|---|
 | File | `smartcare_ai_dataset_1000.csv` |
@@ -47,7 +47,7 @@ Early identification of a patient's disease risk level enables timely clinical i
 - 906 missing values in `room_type` — confirmed structural (only non-admitted patients lack a room), filled with `'Not Admitted'` rather than statistically imputed
 - 31 statistical outliers across 6 clinical columns capped via IQR winsorizing (no rows dropped)
 
-🔄 Leakage-Free Pipeline Architecture
+## 🔄 Leakage-Free Pipeline Architecture
 - **Split-First Protocol**: Stratified 80/20 train/test split (Train N=800, Test N=200) performed *before* scaling and feature selection.
 - **Train-Only Fitting**: Scaling and ANOVA F-score feature selection are fit strictly on `X_train` and applied via `.transform()` to `X_test`.
 - **Leakage Removal**: `record_id`, `patient_id`, `no_show`, `readmitted_30_days`, all financial/billing fields, and appointment/payment administrative fields were explicitly dropped as they are either identifiers, other-option targets, or outcomes of treatment rather than causes of risk.
@@ -57,7 +57,7 @@ Raw Data (N=1000) ──> Clean + Engineer Features ──> Stratified 80/20 Spl
                                                                               └─> Test  (N=200) ──> Transform with Fitted Pipeline ──> Held-Out Eval
 ```
 
-🏷 Feature Engineering & Selection
+## 🏷 Feature Engineering & Selection
 Five new clinically-motivated features were engineered:
 - `pulse_pressure` — systolic minus diastolic BP, a recognized clinical indicator
 - `bmi_category` — clinical BMI bands (Underweight/Normal/Overweight/Obese)
@@ -67,7 +67,7 @@ Five new clinically-motivated features were engineered:
 
 One-hot encoding expanded the feature space to 48 columns; **ANOVA F-test** feature selection (K=15) was used to identify the most predictive features for modeling, cross-checked against Random Forest feature importances. Age, blood sugar, and cholesterol ranked highest by both methods.
 
-🤖 Models & Benchmarking
+## 🤖 Models & Benchmarking
 Three models were tuned via **GridSearchCV with 5-fold cross-validation**, optimizing macro-F1 to account for class imbalance, then evaluated on the identical held-out test set (N=200):
 
 | Rank | Model | Accuracy | Precision (macro) | Recall (macro) | Macro-F1 | ROC-AUC (macro, OvR) |
@@ -84,17 +84,17 @@ Three models were tuned via **GridSearchCV with 5-fold cross-validation**, optim
 | Medium | 0.93 | 0.95 | 0.94 | 94 |
 | High | 0.94 | 0.94 | 0.94 | 80 |
 
-🏆 Best Model Justification
+## 🏆 Best Model Justification
 **Logistic Regression** was selected as the final model. It achieves the highest macro-F1 (0.945) and the strongest recall on the minority Low-risk class (92%), which is the most clinically important error to minimize in a risk-screening context — failing to flag a genuinely at-risk patient is costlier than a false alarm. This result is consistent with the EDA finding that clinical features (age, BP, cholesterol, BMI) rise near-monotonically from Low to High risk, favoring a model with a linear decision boundary over a depth-constrained Random Forest.
 
-🧠 Explainable AI (SHAP)
+## 🧠 Explainable AI (SHAP)
 SHAP analysis was run on the test set (200 samples, 48 features):
 
 - **Global Feature Attributions (mean |SHAP value|):** blood sugar (3.95), cholesterol (3.64), BMI (3.34), age (3.27), and previous admissions (2.37) are the top clinical drivers of risk predictions across all three classes.
 - **Per-Class Summary Plots:** generated separately for Low, Medium, and High risk to show how each feature pushes predictions toward or away from a given class.
 - **Local Explanation:** individual patient-level SHAP force/waterfall plots explain specific prediction decisions (e.g., Patient 0 — Actual: Medium, Predicted: Medium).
 
-🎁 Bonus Work
+## 🎁 Bonus Work
 Beyond the core task requirements, the team completed:
 
 | Area | Result |
@@ -115,7 +115,7 @@ Beyond the core task requirements, the team completed:
 | Deep Learning (MLP) | 0.885 | 0.858 |
 | Random Forest | 0.765 | 0.755 |
 
-📦 AI Prototype (Task 08)
+## 📦 AI Prototype (Task 08)
 A **Streamlit clinical decision-support app** (`app.py`) was built on top of the final Logistic Regression pipeline and deployed via tunnel for live testing. Example predictions on synthetic patients:
 
 | Scenario | Predicted Risk | Confidence |
@@ -129,7 +129,7 @@ A **Streamlit clinical decision-support app** (`app.py`) was built on top of the
 streamlit run app.py
 ```
 
-📁 Project Structure
+## 📁 Project Structure
 ```
 SmartCare-Hospital/
 ├── README.md                          # Project overview & documentation
@@ -153,7 +153,7 @@ SmartCare-Hospital/
     └── hyperparameter_optimization_comparison.csv
 ```
 
-🚀 Getting Started
+## 🚀 Getting Started
 ```bash
 git clone https://github.com/<your-username>/SmartCare-Hospital.git
 cd SmartCare-Hospital
@@ -161,7 +161,7 @@ pip install -r requirements.txt
 streamlit run app/app.py
 ```
 
-👥 Team — Option C, CCS3440 Artificial Intelligence
+## 👥 Team — Option C, CCS3440 Artificial Intelligence
 
 | Member | Contributions |
 |---|---|
