@@ -1,0 +1,13 @@
+Ensemble (Voting Classifier) Results
+Accuracy: 0.9800
+Macro-F1: 0.9755
+
+              precision    recall  f1-score   support
+
+         Low       1.00      0.92      0.96        26
+      Medium       0.96      1.00      0.98        94
+        High       1.00      0.97      0.99        80
+
+    accuracy                           0.98       200
+   macro avg       0.99      0.97      0.98       200
+weighted avg       0.98      0.98      0.98       200
