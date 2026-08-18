@@ -258,7 +258,6 @@ def create_model_input(
 
     row_encoded = pd.get_dummies(row, columns=nominal_cols, drop_first=True)
     row_encoded = row_encoded.reindex(columns=feature_columns, fill_value=0)
-    row_encoded[TRUE_NUMERIC] = scaler.transform(row_encoded[TRUE_NUMERIC])
     return row_encoded
 
 # =========================================================
