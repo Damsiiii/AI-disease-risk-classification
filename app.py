@@ -11,7 +11,7 @@ from PIL import Image
 # 1. CONFIGURATION
 # =========================================================
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path(__file__).resolve().parent
 MODELS_DIR = BASE_DIR / "Models"
 EDA_DIR = BASE_DIR / "Outputs" / "EDA_Plots"
 SHAP_DIR = BASE_DIR / "Outputs" / "SHAP_Plots"
@@ -115,7 +115,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # =========================================================
 # 2. LOAD TRAINED MODEL AND PREPROCESSING OBJECTS
 # =========================================================
@@ -127,20 +126,16 @@ def load_artifacts():
     feature_columns_path = MODELS_DIR / "feature_columns.pkl"
 
     missing = [
-        str(path)
-        for path in [model_path, scaler_path, feature_columns_path]
+        str(path) for path in [model_path, scaler_path, feature_columns_path]
         if not path.exists()
     ]
     if missing:
-        raise FileNotFoundError(
-            "Missing required model files:\n" + "\n".join(missing)
-        )
+        raise FileNotFoundError("Missing required model files:\n" + "\n".join(missing))
 
     model = joblib.load(model_path)
     scaler = joblib.load(scaler_path)
     feature_columns = joblib.load(feature_columns_path)
     return model, scaler, feature_columns
-
 
 try:
     model, scaler, feature_columns = load_artifacts()
@@ -179,7 +174,6 @@ RISK_LABELS = {0: "Low", 1: "Medium", 2: "High"}
 # =========================================================
 # 4. HELPER FUNCTION
 # =========================================================
-
 
 def create_model_input(
     age,
@@ -267,7 +261,6 @@ def create_model_input(
     row_encoded[TRUE_NUMERIC] = scaler.transform(row_encoded[TRUE_NUMERIC])
     return row_encoded
 
-
 # =========================================================
 # 5. SIDEBAR
 # =========================================================
@@ -295,9 +288,7 @@ if page == "Patient Predictor":
         unsafe_allow_html=True,
     )
 
-    st.write(
-        "Enter patient information below to generate an AI-based disease risk prediction."
-    )
+    st.write("Enter patient information below to generate an AI-based disease risk prediction.")
     st.divider()
 
     st.subheader("Patient Information")
@@ -438,8 +429,7 @@ if page == "Patient Predictor":
             confidence = probabilities[predicted_class]
 
             st.subheader("Prediction Result")
-            result_box = st.container()
-            with result_box:
+            with st.container():
                 if prediction == "Low":
                     st.success(f"Disease Risk Level: {prediction}")
                 elif prediction == "Medium":
@@ -531,4 +521,3 @@ elif page == "Model Analytics":
 
     st.divider()
     st.caption("Prototype for academic demonstration. Predictions are model outputs and are not a medical diagnosis.")
-
